@@ -16,11 +16,27 @@ let package = Package(
             targets: ["SQLite"]
         )
     ],
+    dependencies: [
+        .package(path: "../SQLCipher")
+    ],
     targets: [
         .target(
             name: "SQLite",
+            dependencies: [
+                "SQLCipher"
+            ],
             exclude: [
                 "Info.plist"
+            ],
+            cSettings: [
+                .define("SQLITE_HAS_CODEC", to:"1"),
+                .define("SQLITE_TEMP_STORE", to:"3"),
+                .define("SQLCIPHER_CRYPTO_CC", to:nil),
+                .define("NDEBUG", to:"1")
+            ],
+            swiftSettings: [
+                .define("SQLITE_HAS_CODEC"),
+                .define("SQLITE_SWIFT_SQLCIPHER")
             ]
         ),
         .testTarget(
